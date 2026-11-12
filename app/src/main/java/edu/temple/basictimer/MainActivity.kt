@@ -7,11 +7,14 @@ import android.widget.Button
 import android.os.IBinder
 import android.content.ComponentName
 import android.content.Intent
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import androidx.lifecycle.Lifecycle
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,7 +49,8 @@ class MainActivity : AppCompatActivity() {
 
         bindService(
             Intent(this, TimerService::class.java),
-            serviceConnection, BIND_AUTO_CREATE
+            serviceConnection,
+            BIND_AUTO_CREATE
         )
 
 
@@ -76,4 +80,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-}
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.basic_timer, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+            R.id.action_start -> {timerBinder?.start(100);true}
+            R.id.action_stop -> {timerBinder?.stop();true}
+            else -> super.onOptionsItemSelected(item)
+
+    }
+
+    }
+
